@@ -2,12 +2,17 @@
 
 def find_feature_labels(data,
                         comment_character: str,
-                        commented_labels: bool):
+                        commented_labels: bool,
+                        headerless: bool = False):
 
-    liminal_line = delineate_data(data, comment_character)
+    first_data_line = index_of_first_data_line(data,
+                                               comment_character,
+                                               commented_labels)
 
-    if commented_labels:
-        return data[liminal_line - 1]
+    if commented_labels or (not commented_labels and not headerless):
+        return data[first_data_line - 1]
+    else:
+        ValueError('No feature labels found')
 
 def index_of_first_data_line(data, comment_character, commented_labels):
 
