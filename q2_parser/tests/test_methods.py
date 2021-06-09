@@ -18,11 +18,13 @@ class TestUtils(TestPluginBase):
 
             filepath = self.get_data_path(filename=filename)
             with open(filepath, 'r') as fh:
-                first_data_line = _method.index_of_first_data_line(fh,
-                                                                   params[0],
-                                                                   params[1]
-                                                                   )
-                self.assertEqual(first_data_line, params[2])
+                data = fh.readlines()
+
+            first_data_line = _method.index_of_first_data_line(data,
+                                                               params[0],
+                                                               params[1]
+                                                               )
+            self.assertEqual(first_data_line, params[2])
 
     def test_get_feature_labels(self):
         exp = ['Feature one', 'dos', 'third']
@@ -32,11 +34,11 @@ class TestUtils(TestPluginBase):
             with open(filepath, 'r') as fh:
                 data = fh.readlines()
 
-            obs = _method.find_feature_labels(fh,
+            obs = _method.find_feature_labels(data,
                                       comment_character=params[0],
                                       commented_labels=params[1],
                                       headerless=params[3])
-            self.assertEqual(exp, list(obs))
+            self.assertEqual(exp, obs)
 
 if __name__ == '__main__':
     unittest.main()

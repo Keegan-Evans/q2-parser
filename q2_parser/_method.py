@@ -9,17 +9,26 @@ def find_feature_labels(data,
     first_data_line = index_of_first_data_line(data,
                                                comment_character,
                                                commented_labels)
-    print('*' * 25)
-    print(first_data_line)
-    print('$' * 50)
-    print(list(data))
-    print('@' * 50)
-    print(data)
 
-    if commented_labels or (not commented_labels and not headerless):
-        return read_labels(data, first_data_line - 1)
-    else:
-        ValueError('No feature labels found')
+    labels = data[first_data_line - 1]
+    labels = labels.split(sep)
+
+    # remove comment character
+    if commented_labels:
+        labels = strip_comment_character(labels=labels,
+                                 comment_character=comment_character)
+
+    labels = [label.strip() for label in labels]
+    return labels
+
+    # if commented_labels or (not commented_labels and not headerless):
+    #     return read_labels(data, first_data_line - 1)
+    # else:
+    #     ValueError('No feature labels found')
+
+def strip_comment_character(labels: list, comment_character: str):
+    labels = [labels[0].lstrip(comment_character)] + labels[1:]
+    return labels
 
 def read_labels(data, label_line):
     data_list = list(data)
